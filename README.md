@@ -37,14 +37,6 @@ print(create_warhorn_message(sessions))
 
 Install dependencies with `pip install -r requirements.txt` (not yet provided).
 
-## Testing
-
-Run the tests with:
-
-```bash
-python -m pytest tests
-```
-
 ## Notes
 
 This scraper is specific to the HTML structure of the Warhorn schedule page and
