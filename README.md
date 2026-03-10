@@ -11,9 +11,6 @@ announcements.
 * `warhorn_message.py` – imports the scraper and exposes helper functions to
   clean and format the session list into a Markdown message. Can also be run
   directly from the command line to print the message.
-* `tests/` – unit tests (requires [pytest](https://pytest.org)). The suite
-  validates formatting utilities and performs a simple sanity check on
-  the scraper.
 
 ## Usage
 
