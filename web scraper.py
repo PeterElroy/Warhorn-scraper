@@ -149,7 +149,7 @@ def scrape_rpg_night_sessions():
             now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
             print(f"\n# RPG Night Utrecht - {first_date}\n")
             print(f"*Last checked {now_str}*\n")
-            print("Great games with open seats for @everyone!\n")
+            print("Great games for @everyone! Looking for a different game? Let us know in #⁠🍺-rpg-night-tavern and perhaps a GM will pick it up!\n")
             first_loc = True
             for location in sorted(by_location.keys()):
                 clean_loc = clean_location(location)
