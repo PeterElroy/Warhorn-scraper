@@ -1,13 +1,13 @@
 import sys
 import re
 import os
+import tempfile
 from collections import defaultdict
 from datetime import datetime
 
 # when running from the command line we want emoji to work
 sys.stdout.reconfigure(encoding='utf-8')
 
-import requests
 from scraper import scrape_rpg_night_sessions
 
 
@@ -144,6 +144,19 @@ def post_to_discord(message, webhook_url=None):
 
 
 if __name__ == "__main__":
+    print("Starting script...", file=sys.stderr)  # Debug output to stderr
     sessions = scrape_rpg_night_sessions()
     message = create_warhorn_message(sessions)
+    
+    # Print message to terminal
     print(message)
+    
+    # If output is being piped, also write to temp file and print path
+    if not sys.stdout.isatty():
+        # Write message to a temporary file with UTF-8 encoding
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', delete=False, suffix='.txt') as f:
+            f.write(message)
+            temp_file = f.name
+        
+        # Print the temp file path so it can be read by discord_poster.py
+        print(temp_file)
