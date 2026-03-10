@@ -10,7 +10,13 @@ from scraper import scrape_rpg_night_sessions
 
 
 def get_available_seats(player_info):
-    """Extract available seats from player info like '6 of 6 players'."""
+    """Extract available seats from player info like '6 of 6 players'.
+
+    If `player_info` is falsy or not a string, return ``None`` rather than
+    raising an exception.
+    """
+    if not player_info:
+        return None
     try:
         match = re.search(r"(\d+)\s+of\s+(\d+)\s+players", player_info)
         if match:
@@ -30,9 +36,13 @@ def clean_session_name(name):
 
 
 def clean_location(location):
-    """Trim the venue prefix from location strings."""
+    """Trim the venue prefix from location strings.
+
+    Always strip the result to remove any leading/trailing whitespace that may
+    have been introduced during slicing.
+    """
     if location.startswith('Subcultures @'):
-        return location[13:]
+        return location[13:].strip()
     return location
 
 
