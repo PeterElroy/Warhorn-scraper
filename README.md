@@ -35,7 +35,9 @@ print(create_warhorn_message(sessions))
 * `beautifulsoup4`
 * `pytest` (for running tests)
 
-Install dependencies with `pip install -r requirements.txt` (not yet provided).
+Install dependencies with `pip install -r requirements.txt`.
+
+Note that Playwright may require additional browser installation via `playwright install` after pip installation.
 
 ## Notes
 
