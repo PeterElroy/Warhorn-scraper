@@ -1,9 +1,27 @@
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
+from datetime import datetime
 import re
 
+def parse_date(date_text):
+    """Parse date text like 'Wednesday, 4 Mar' into a comparable date object.
+    
+    Assumes the year is 2026. Returns None if parsing fails.
+    """
+    if not date_text:
+        return None
+    try:
+        # Extract day and month from text like "Wednesday, 4 Mar"
+        match = re.search(r'(\d+)\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)', date_text)
+        if match:
+            day = int(match.group(1))
+            month_str = match.group(2)
+            return datetime.strptime(f"2026 {day} {month_str}", "%Y %d %b").date()
+    except (ValueError, AttributeError):
+        pass
+    return None
 
-def scrape_rpg_night_sessions():
+def scrape_sessions():
     """Return a list of session dictionaries scraped from the RPG Night Utrecht agenda.
 
     Each dictionary contains the following keys:
@@ -17,7 +35,8 @@ def scrape_rpg_night_sessions():
     """
 
     url = "https://warhorn.net/events/rpg-night-utrecht/schedule/agenda"
-
+    print(f"Scraping {url}...") 
+    
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -30,6 +49,7 @@ def scrape_rpg_night_sessions():
 
             sessions = []
             card_bodies = soup.find_all('div', class_='card-body')
+            current_date = None
 
             for card in card_bodies:
                 session_link = card.find('a', href=lambda x: x and '/schedule/sessions/' in x)
@@ -41,6 +61,18 @@ def scrape_rpg_night_sessions():
 
                 date_link = card.find('a', href=lambda x: x and '/schedule/2026' in x)
                 date_text = date_link.get_text(strip=True) if date_link else None
+
+                # Check if we've encountered a later date than the current one
+                if date_text:
+                    parsed_date = parse_date(date_text)
+                    if parsed_date:
+                        if current_date is None:
+                            current_date = parsed_date
+                        elif parsed_date > current_date:
+                            # Stop scraping when we reach a later date
+                            break
+                        else:
+                            current_date = parsed_date
 
                 location = None
                 for div in card.find_all('div'):
@@ -69,7 +101,11 @@ def scrape_rpg_night_sessions():
                         'location': location,
                         'players': player_info,
                     })
-
+                    
             return sessions
+        
+            print(f"Scraped {len(sessions)} sessions from Warhorn.") 
+
         finally:
             browser.close()
+

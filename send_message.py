@@ -9,7 +9,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 def post_to_discord(message, webhook_url=None):
     """Post the message to Discord using a webhook."""
     if not webhook_url:
-        webhook_url = os.getenv('DISCORD_WEBHOOK_URL') or "https://discord.com/api/webhooks/1480921849381785686/esID1T0ky83CEPv5isqZwjEYtPJLs_r8hC5J89ktlojqjiBmiyyVqc7V39Hbh8HSn6aV"
+        webhook_url = os.getenv('DISCORD_WEBHOOK_URL') or "https://discord.com/api/webhooks/1481203074826506280/5MvRTOu_cPs31GbJ5FYeTtaTN4L7JTAJvuysF28AzH31-kRQ9PsPjhf4KGCxvEr9whf1"
     if not webhook_url:
         print("No Discord webhook URL provided.")
         return False
