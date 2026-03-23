@@ -80,7 +80,7 @@ def compose_message(sessions):
     lines.append(f"*Last checked {now_str}*")
     lines.append("")
     lines.append(
-        "Great games for @everyone! Looking for a different game? Let us know in #⁠rpg-night-tavern and a GM might pick it up!"
+        "Great games for @everyone! Looking for something else? Let us know in #⁠rpg-night-tavern and a GM might pick it up!"
     )
     lines.append("")
 
