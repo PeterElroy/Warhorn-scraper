@@ -80,7 +80,7 @@ def compose_message(sessions):
     lines.append(f"*Last checked {now_str}*")
     lines.append("")
     lines.append(
-        "Great games for @everyone! Looking for something else? Let us know in #⁠rpg-night-tavern and a GM might pick it up!"
+        "Great games for @everyone! If a game is full, you can join the waitlist. Looking for something else? Let us know in the #⁠rpg-night-tavern and a GM might pick it up!"
     )
     lines.append("")
 
@@ -119,7 +119,7 @@ def compose_message(sessions):
 
     lines.append("")
     lines.append(
-        " [Find our latest upcoming games here.](https://warhorn.net/events/rpg-night-utrecht/schedule/agenda)"
+        " [Find our latest upcoming games here](https://warhorn.net/events/rpg-night-utrecht/schedule/agenda)"
     )
     return "\n".join(lines)
 
