@@ -80,7 +80,7 @@ def compose_message(sessions):
     lines.append(f"*Last checked {now_str}*")
     lines.append("")
     lines.append(
-        "Great games for @everyone! If a game is full, you can join the waitlist. Looking for something else? Let us know in the #⁠rpg-night-tavern and a GM might pick it up!"
+        "Great games for @everyone this Wednesday at the RPG Night Utrecht! If a session is full, you can still join the waitlist. Looking to play something else? Make a request in the #⁠rpg-night-tavern and a GM might pick it up!"
     )
     lines.append("")
 
