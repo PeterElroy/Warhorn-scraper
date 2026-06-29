@@ -74,10 +74,7 @@ def compose_message(sessions):
         by_location[s['location']].append(s)
 
     lines = []
-    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
     lines.append(f"# RPG Night Utrecht - {first_date}")
-    lines.append("")
-    lines.append(f"*Last checked {now_str}*")
     lines.append("")
     lines.append(
         "Great games for @everyone! Looking for a different game? Let us know in #⁠🍺-rpg-night-tavern and perhaps a GM will pick it up!"
@@ -116,11 +113,6 @@ def compose_message(sessions):
                     f"- [{clean_name}]({session['url']}) — **{session['players']}**"
                 )
             lines.append(line)
-
-    lines.append("")
-    lines.append(
-        "Find our all upcoming games here: https://warhorn.net/events/rpg-night-utrecht/schedule/agenda"
-    )
     return "\n".join(lines)
 
 
