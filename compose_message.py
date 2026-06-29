@@ -77,7 +77,7 @@ def compose_message(sessions):
     lines.append(f"# RPG Night Utrecht - {first_date}")
     lines.append("")
     lines.append(
-        "Great games for @everyone! Looking for a different game? Let us know in #⁠🍺-rpg-night-tavern and perhaps a GM will pick it up!"
+        "Great games for @everyone! Game full? Join the waitlist or request a new game!"
     )
     lines.append("")
 
