@@ -74,13 +74,13 @@ def compose_message(sessions):
         by_location[s['location']].append(s)
 
     lines = []
-    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+#    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
     lines.append(f"# RPG Night Utrecht - {first_date}")
     lines.append("")
-    lines.append(f"*Last checked {now_str}*")
+#    lines.append(f"*Last checked {now_str}*")
     lines.append("")
     lines.append(
-        "Great games for @everyone this Wednesday at the RPG Night Utrecht! If a session is full, you can still join the waitlist. Looking to play something else? Make a request in the #⁠rpg-night-tavern and a GM might pick it up!"
+        "Great games for @everyone this Wednesday night! Sessions full? Join the waitlist or request another game."
     )
     lines.append("")
 
@@ -117,11 +117,14 @@ def compose_message(sessions):
                 )
             lines.append(line)
 
-    lines.append("")
-    lines.append(
-        " [Find our latest upcoming games here](https://warhorn.net/events/rpg-night-utrecht/schedule/agenda)"
-    )
-    return "\n".join(lines)
+#    lines.append("")
+#    lines.append(
+        " [Find our latest games on Warhorn](https://warhorn.net/events/rpg-night-utrecht/schedule/agenda)"
+#    )
+#    lines.append(
+#        " [Join our Discord](https://discord.com/invite/5HxAtZ4QG4)"
+#    )
+#    return "\n".join(lines)
 
 if __name__ == "__main__":
     print("Starting script...", file=sys.stderr)  # Debug output to stderr
