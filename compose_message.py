@@ -1,13 +1,14 @@
 import sys
 import re
+import os
+import tempfile
 from collections import defaultdict
 from datetime import datetime
 
 # when running from the command line we want emoji to work
 sys.stdout.reconfigure(encoding='utf-8')
 
-from scraper import scrape_rpg_night_sessions
-
+from scrape_sessions import scrape_sessions
 
 def get_available_seats(player_info):
     """Extract available seats from player info like '6 of 6 players'.
@@ -46,7 +47,7 @@ def clean_location(location):
     return location
 
 
-def create_warhorn_message(sessions):
+def compose_message(sessions):
     """Given a list of session dicts, return the formatted Markdown message."""
     if not sessions:
         return "No sessions found."
@@ -73,13 +74,13 @@ def create_warhorn_message(sessions):
         by_location[s['location']].append(s)
 
     lines = []
-    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+#    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
     lines.append(f"# RPG Night Utrecht - {first_date}")
     lines.append("")
-    lines.append(f"*Last checked {now_str}*")
+#    lines.append(f"*Last checked {now_str}*")
     lines.append("")
     lines.append(
-        "Great games for @everyone! Looking for a different game? Let us know in #⁠🍺-rpg-night-tavern and perhaps a GM will pick it up!"
+        "Great games for @everyone this Wednesday night! Sessions full? Join the waitlist or request another game."
     )
     lines.append("")
 
@@ -116,14 +117,29 @@ def create_warhorn_message(sessions):
                 )
             lines.append(line)
 
-    lines.append("")
-    lines.append(
-        "Find our all upcoming games here: https://warhorn.net/events/rpg-night-utrecht/schedule/agenda"
-    )
-    return "\n".join(lines)
-
+#    lines.append("")
+#    lines.append(
+        " [Find our latest games on Warhorn](https://warhorn.net/events/rpg-night-utrecht/schedule/agenda)"
+#    )
+#    lines.append(
+#        " [Join our Discord](https://discord.com/invite/5HxAtZ4QG4)"
+#    )
+#    return "\n".join(lines)
 
 if __name__ == "__main__":
-    sessions = scrape_rpg_night_sessions()
-    message = create_warhorn_message(sessions)
+    print("Starting script...", file=sys.stderr)  # Debug output to stderr
+    sessions = scrape_sessions()
+    message = compose_message(sessions)
+    
+    # Print message to terminal
     print(message)
+    
+    # If output is being piped, also write to temp file and print path
+    if not sys.stdout.isatty():
+        # Write message to a temporary file with UTF-8 encoding
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', delete=False, suffix='.txt') as f:
+            f.write(message)
+            temp_file = f.name
+        
+        # Print the temp file path so it can be read by discord_poster.py
+        print(temp_file)

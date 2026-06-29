@@ -8,24 +8,44 @@ announcements.
 
 * `scraper.py` – contains `scrape_rpg_night_sessions()`, the Playwright/BeautifulSoup
   code that fetches and parses session data from the Warhorn agenda.
-* `warhorn_message.py` – imports the scraper and exposes helper functions to
-  clean and format the session list into a Markdown message. Can also be run
-  directly from the command line to print the message.
+* `discord_message.py` – generates the formatted Markdown message from scraped data.
+* `discord_poster.py` – posts a message to Discord via webhook.
 
 ## Usage
 
+To generate and print the message:
+
 ```bash
-python warhorn_message.py
+python discord_message.py
 ```
+
+To generate the message and post to Discord:
+
+```bash
+python discord_message.py | python discord_poster.py
+```
+
+**Windows users:** Double-click `post_to_discord.bat` to run the full pipeline and post to Discord.
+
+To automatically post to Discord, set the `DISCORD_WEBHOOK_URL` environment variable:
+
+```bash
+export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/your-webhook-id/your-webhook-token"
+python discord_message.py | python discord_poster.py
+```
+
+**Note:** The script has a default webhook URL configured. If no environment variable is set, it will use the default webhook. You can override this by setting the `DISCORD_WEBHOOK_URL` environment variable.
 
 or from another script:
 
 ```python
 from scraper import scrape_rpg_night_sessions
-from warhorn_message import create_warhorn_message
+from discord_message import create_warhorn_message, post_to_discord
 
 sessions = scrape_rpg_night_sessions()
-print(create_warhorn_message(sessions))
+message = create_warhorn_message(sessions)
+print(message)
+post_to_discord(message)
 ```
 
 ## Requirements
@@ -33,6 +53,7 @@ print(create_warhorn_message(sessions))
 * Python 3.11+ (the workspace uses 3.13)
 * [Playwright](https://playwright.dev) and a browser driver
 * `beautifulsoup4`
+* `requests`
 * `pytest` (for running tests)
 
 Install dependencies with `pip install -r requirements.txt`.
