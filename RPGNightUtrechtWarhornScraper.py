@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 import re
 from urllib.parse import urljoin
 
-
+# Defining emoji pattern to remove emojis from session titles, because they can cause issues with Markdown formatting.
 URL = "https://warhorn.net/events/rpg-night-utrecht/schedule/agenda"
 EMOJI_PATTERN = re.compile(
     "["
@@ -442,7 +442,23 @@ def main():
 
         print()
 
-    print(f"Agenda: {URL}")
+    available_sessions = [
+        session
+        for location_sessions in sessions_by_location.values()
+        for session in location_sessions
+        if (
+            session["player_difference"] is not None
+            and session["player_difference"] > 0
+            and session["session_url"]
+        )
+    ]
+
+    if available_sessions:
+        print()
+        print("Available session links:")
+        for session in available_sessions:
+            title = session["title"] or "Untitled session"
+            print(f"• {title}: {session['session_url']}")
 
 
 if __name__ == "__main__":
