@@ -1,4 +1,1 @@
 playwright
-beautifulsoup4
-pytest
-requests

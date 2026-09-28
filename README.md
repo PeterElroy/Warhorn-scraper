@@ -1,67 +1,51 @@
-# RPG Night Utrecht Scraper
+# RPG Night Utrecht Warhorn Scraper
 
-A small Python project that scrapes the Warhorn page for RPG Night Utrecht and
-produces a nicely formatted Markdown message suitable for Discord/Warhorn
-announcements.
+A small Python scraper for the [RPG Night Utrecht Warhorn agenda](https://warhorn.net/events/rpg-night-utrecht/schedule/agenda). It collects the sessions listed for the first date on the agenda and prints two ready-to-share message formats:
 
-## Files
+- **Discord:** Markdown headings, links on session titles, and availability counts.
+- **WhatsApp:** Bold event and location headings, a plain-text session list, and one link to the agenda at the end.
 
-* `scraper.py` – contains `scrape_rpg_night_sessions()`, the Playwright/BeautifulSoup
-  code that fetches and parses session data from the Warhorn agenda.
-* `discord_message.py` – generates the formatted Markdown message from scraped data.
-* `discord_poster.py` – posts a message to Discord via webhook.
-
-## Usage
-
-To generate and print the message:
-
-```bash
-python discord_message.py
-```
-
-To generate the message and post to Discord:
-
-```bash
-python discord_message.py | python discord_poster.py
-```
-
-**Windows users:** Double-click `post_to_discord.bat` to run the full pipeline and post to Discord.
-
-To automatically post to Discord, set the `DISCORD_WEBHOOK_URL` environment variable:
-
-```bash
-export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/your-webhook-id/your-webhook-token"
-python discord_message.py | python discord_poster.py
-```
-
-**Note:** The script has a default webhook URL configured. If no environment variable is set, it will use the default webhook. You can override this by setting the `DISCORD_WEBHOOK_URL` environment variable.
-
-or from another script:
-
-```python
-from scraper import scrape_rpg_night_sessions
-from discord_message import create_warhorn_message, post_to_discord
-
-sessions = scrape_rpg_night_sessions()
-message = create_warhorn_message(sessions)
-print(message)
-post_to_discord(message)
-```
+Sessions are grouped by location and sorted by available player spaces.
 
 ## Requirements
 
-* Python 3.11+ (the workspace uses 3.13)
-* [Playwright](https://playwright.dev) and a browser driver
-* `beautifulsoup4`
-* `requests`
-* `pytest` (for running tests)
+- Python 3
+- The packages listed in `requirements.txt`
+- Chromium installed through Playwright
 
-Install dependencies with `pip install -r requirements.txt`.
+## Setup
 
-Note that Playwright may require additional browser installation via `playwright install` after pip installation.
+Create and activate a virtual environment, then install the Python dependency and browser.
+
+### Windows PowerShell
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m playwright install chromium
+```
+
+### macOS or Linux
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m playwright install chromium
+```
+
+## Run
+
+With the virtual environment activated:
+
+```bash
+python RPGNightUtrechtWarhornScraper.py
+```
+
+The script runs Chromium in headless mode and prints status messages followed by sections labeled `--- Discord version ---` and `--- WhatsApp version ---`. Copy the message content after the corresponding label when sharing it.
 
 ## Notes
 
-This scraper is specific to the HTML structure of the Warhorn schedule page and
-may break if the site layout changes. The scraping logic is intentionally
-isolated so the message formatting can be reused independently.
+- The scraper is tailored to the current Warhorn agenda page structure; changes to that page may require selector updates.
+- No Discord or Warhorn credentials are required. The script reads the public agenda and prints text; it does not post messages automatically.
