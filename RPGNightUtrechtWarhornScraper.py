@@ -381,7 +381,7 @@ def main():
     print("[status] Sorted sessions by player difference and location.", flush=True)
 
     # -------------------------------------------------------------
-    # 2. Print Markdown grouped by location.
+    # 2. Print Discord message.
     # -------------------------------------------------------------
     print("[status] Printing session results.", flush=True)
     header_date = re.sub(
@@ -421,6 +421,11 @@ def main():
             print(f"- {title} — {availability}")
 
     print()
+    
+    # -------------------------------------------------------------
+    # 3. Print WhatsApp message.
+    # -------------------------------------------------------------
+
     print("--- WhatsApp version ---")
     print(f"*RPG Night Utrecht - {header_date}*")
     print(
