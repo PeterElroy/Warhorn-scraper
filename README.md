@@ -49,3 +49,7 @@ The script runs Chromium in headless mode and prints status messages followed by
 
 - The scraper is tailored to the current Warhorn agenda page structure; changes to that page may require selector updates.
 - No Discord or Warhorn credentials are required. The script reads the public agenda and prints text; it does not post messages automatically.
+
+## AI Disclaimer
+
+The first release was generated with Claude. Later increments made use of the standard agent of Visual Studio Code.

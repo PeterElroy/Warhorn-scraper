@@ -353,7 +353,6 @@ def clean_sessions(sessions):
 
 
 def main():
-    print("[status] Scraping sessions.", flush=True)
     sessions = scrape_sessions()
     print("[status] Cleaning session locations and titles.", flush=True)
     sessions = clean_sessions(sessions)
@@ -394,7 +393,7 @@ def main():
         flags=re.IGNORECASE,
     )
     print()
-    print("--- Discord version ---")
+    print("--- Discord message ---")
     print(f"# RPG Night Utrecht - {header_date}")
     print("Games for @everyone. All levels of experience welcome. Session full? Join the waitlist or request another session.")
     print()
@@ -426,10 +425,10 @@ def main():
     # 3. Print WhatsApp message.
     # -------------------------------------------------------------
 
-    print("--- WhatsApp version ---")
+    print("--- WhatsApp message ---")
     print(f"*RPG Night Utrecht - {header_date}*")
     print(
-        "Games for everyone. All levels of experience welcome. Session full? "
+        "Games for everyone: all experience levels welcome. Session full? "
         "Join the waitlist or request another session."
     )
     print()
