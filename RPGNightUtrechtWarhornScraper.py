@@ -127,16 +127,62 @@ def scrape_sessions():
             ).first
             has_title = title_link.count() > 0
 
+            # -----------------------------------------------------
+            # Cancelled session
+            #
+            # The page marks a cancelled session by wrapping its
+            # title in an <s> element, which has line-through styling.
+            # Check the title and its descendants, then skip the card
+            # before extracting the remaining session details.
+            # -----------------------------------------------------
+            cancelled = False
+
+            if has_title:
+                cancelled = bool(
+                    title_link.evaluate(
+                        """
+                        el => {
+                            const nodes = [el, ...el.querySelectorAll("*")];
+
+                            for (const node of nodes) {
+                                const style = getComputedStyle(node);
+                                const textDecoration = (
+                                    (style.textDecorationLine || "") + " " + (style.textDecoration || "")
+                                ).toLowerCase();
+
+                                if (textDecoration.includes("line-through")) {
+                                    return true;
+                                }
+                            }
+
+                            return false;
+                        }
+                        """
+                    )
+                )
+
             title = (
                 clean(title_link.inner_text())
                 if has_title
                 else None
+            )
+            display_title = (
+                clean(EMOJI_PATTERN.sub("", title))
+                if title
+                else title
             )
             session_url = (
                 urljoin(URL, title_link.get_attribute("href"))
                 if has_title
                 else None
             )
+
+            if cancelled:
+                print(
+                    f"[status] Skipping cancelled session: {display_title}.",
+                    flush=True,
+                )
+                continue
 
             # -----------------------------------------------------
             # Location
@@ -308,6 +354,7 @@ def scrape_sessions():
                     "title": title,
                     "session_url": session_url,
                     "location": location,
+                    "cancelled": cancelled,
                     "full": full,
                     "scenario_thumbnail": scenario_thumbnail,
                     "scenario_thumbnail_alt": scenario_thumbnail_alt,
@@ -322,7 +369,7 @@ def scrape_sessions():
             )
 
             print(
-                f"[status] Parsed card {i + 1}/{card_count}: {title}.",
+                f"[status] Parsed card {i + 1}/{card_count}: {display_title}.",
                 flush=True,
             )
 

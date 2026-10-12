@@ -52,4 +52,4 @@ The script runs Chromium in headless mode and prints status messages followed by
 
 ## AI Disclaimer
 
-The first release was generated with Claude. Later increments made use of the standard agent of Visual Studio Code.
+The first release of this webscraper was generated with Claude. Following increments made use of the standard agent in Visual Studio Code.
