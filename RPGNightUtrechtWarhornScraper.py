@@ -43,6 +43,15 @@ def parse_count(text, kind):
     return int(match.group(1)), int(match.group(2))
 
 
+def format_availability(difference):
+    """Format the remaining player spots, including singular grammar."""
+    if difference == 0:
+        return "FULL"
+
+    spot_word = "spot" if difference == 1 else "spots"
+    return f"{difference} {spot_word} left"
+
+
 def scrape_sessions():
     print("[status] Starting browser.", flush=True)
 
@@ -456,11 +465,8 @@ def main():
         for session in location_sessions:
             title = session["title"] or "Untitled session"
             difference = session["player_difference"]
-
-            if difference == 0:
-                availability = "FULL"
-            else:
-                availability = f"{difference} spots left"
+            availability = format_availability(difference)
+            if difference != 0:
                 if session["session_url"]:
                     title = f"[{title}]({session['session_url']})"
 
@@ -486,9 +492,7 @@ def main():
         for session in location_sessions:
             title = session["title"] or "Untitled session"
             difference = session["player_difference"]
-            availability = (
-                "FULL" if difference == 0 else f"{difference} spots left"
-            )
+            availability = format_availability(difference)
             print(f"• {title} — {availability}")
 
         print()
